@@ -1,2 +1,0 @@
-# QueriesMongoDb
-# queries-sucupira
