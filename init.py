@@ -20,14 +20,19 @@ total_docentes_permanentes = 0
 total_docentes_colaboradores = 0
 total_docentes_visitantes = 0
 total_docentes = 0
-total_atividades_extras = 0
 total_docentes_com_mestrado = 0
 total_docentes_com_doutorado = 0
 # discentes
 total_discentes_com_mestrado = 0
 total_discentes_com_doutorado = 0
+total_orientadores = 0
 # producoes
 total_autores_producoes = 0
+total_discentes_autores = 0
+total_docentes_autores = 0
+
+#teste
+numero = 0
 
 ######################################## DOCENTES ########################################
 
@@ -79,8 +84,11 @@ total_docentes_com_doutorado = total_docentes_com_doutorado
 ######################################## DISCENTES ########################################
 
 ########## ORIENTADORES ##########
+#Não está retornando todos orientadores ainda
 
-orientadores = collection_discentes.find({'orientadores': {'$exists':'true'}})
+orientadores = collection_discentes.find({'orientadores.nome': {'$exists':'true'}})
+for orientador in orientadores:
+  total_orientadores += 1
 
 ########## NÍVEL DISCENTES ##########
 
@@ -104,8 +112,33 @@ total_discentes_com_doutorado = total_discentes_com_doutorado
 ########## AUTORES DAS PRODUÇÕES ##########
             # Não está retornando todos autores ainda
 
-autores_producoes = collection_producoes.find({'autores': {'$exists':'true'}})
+autores_producoes = collection_producoes.find({'autores.nome': {'$exists':'true'}})
 for autor_producao in autores_producoes:
   total_autores_producoes += 1
-total_autores_producoes = total_autores_producoes
-print(total_autores_producoes)
+
+########## TESTE AUTORES DAS PRODUÇÕES ##########
+            # Não está retornando todos autores ainda
+            # Não está retornando todos autores ainda
+            # Não está retornando todos autores ainda
+            # Não está retornando todos autores ainda
+            # Não está retornando todos autores ainda
+            # Não está retornando todos autores ainda
+# autores_producoes = collection_producoes.find({'autores.nome': 'METAXOGLOU, KONSTANTINOS'})
+# orientadores = collection_docentes.find({ 'pessoa.nome': { '$regex': "^[A-Z]" }})
+todos_autores = collection_producoes.aggregate([{'$unwind': '$pessoa.nome'}])
+
+
+########## DISCENTES AUTORES ##########
+
+discentes_autores = collection_producoes.find({'autores.categoria': 'Discente'})
+for discente_autor in discentes_autores:
+  total_discentes_autores += 1
+total_discentes_autores = total_discentes_autores
+
+
+########## DOCENTES AUTORES ##########
+
+docentes_autores = collection_producoes.find({'autores.categoria': 'Docente'})
+for docente_autor in docentes_autores:
+  total_docentes_autores += 1
+total_docentes_autores = total_docentes_autores
